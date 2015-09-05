@@ -1,5 +1,5 @@
 # RadGridViewEFCodeFirst
-Data binding Telerik WinForms RadGridView using Entity Framework and [Code First](https://msdn.microsoft.com/en-us/data/jj193542) approach
+Data binding Telerik WinForms RadGridView using Entity Framework and Code First approach
 
 The project implements [Repository Pattern](https://msdn.microsoft.com/en-us/library/ff649690.aspx) and [Unit of Work](http://martinfowler.com/eaaCatalog/unitOfWork.html).
 
