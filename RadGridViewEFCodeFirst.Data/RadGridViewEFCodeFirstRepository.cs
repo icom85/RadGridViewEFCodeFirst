@@ -1,21 +1,19 @@
-﻿using RadGridViewEFCodeFirst.Data.Contracts;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace RadGridViewEFCodeFirst.Data.Repositories
+using RadGridViewEFCodeFirst.Data.Contracts;
+
+namespace RadGridViewEFCodeFirst.Data
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : class
+    public class RadGridViewEFCodeFirstRepository<T> : IGenericRepository<T> where T : class
     {
         private IRadGridViewEFCodeFirstContext context;
         private IDbSet<T> set;
 
-        public GenericRepository(IRadGridViewEFCodeFirstContext context)
+        public RadGridViewEFCodeFirstRepository(IRadGridViewEFCodeFirstContext context)
         {
             this.context = context;
             this.set = context.Set<T>();

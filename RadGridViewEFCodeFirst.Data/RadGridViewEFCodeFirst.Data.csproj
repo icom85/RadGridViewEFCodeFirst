@@ -48,14 +48,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\DataGenerator.cs" />
     <Compile Include="Contracts\IGenericRepository.cs" />
     <Compile Include="Contracts\IRadGridViewEFCodeFirstContext.cs" />
     <Compile Include="Contracts\IRadGridViewEFCodeFirstData.cs" />
-    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Migrations\Configuration.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RadGridViewEFCodeFirstContext.cs" />
     <Compile Include="RadGridViewEFCodeFirstData.cs" />
-    <Compile Include="Repositories\GenericRepository.cs" />
+    <Compile Include="RadGridViewEFCodeFirstRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

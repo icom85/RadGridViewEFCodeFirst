@@ -1,11 +1,9 @@
-﻿using RadGridViewEFCodeFirst.Models;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using RadGridViewEFCodeFirst.Models;
 
 namespace RadGridViewEFCodeFirst.Data.Contracts
 {
@@ -14,6 +12,8 @@ namespace RadGridViewEFCodeFirst.Data.Contracts
         IDbSet<Order> Orders { get; set; }
 
         IDbSet<OrderType> OrderTypes { get; set; }
+
+        IDbSet<Shipper> Shippers { get; set; }
 
         IDbSet<T> Set<T>() where T : class;
 

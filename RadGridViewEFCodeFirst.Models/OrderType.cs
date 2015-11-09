@@ -9,10 +9,12 @@ namespace RadGridViewEFCodeFirst.Models
     public class OrderType
     {
         private ICollection<Order> orders;
+        private ICollection<Shipper> shippers;
 
         public OrderType()
         {
             this.orders = new HashSet<Order>();
+            this.shippers = new HashSet<Shipper>();
         }
 
         public int OrderTypeId { get; set; }
@@ -26,6 +28,18 @@ namespace RadGridViewEFCodeFirst.Models
             set
             {
                 this.orders = value;
+            }
+        }
+
+        public virtual ICollection<Shipper> Shippers
+        {
+            get
+            {
+                return this.shippers;
+            }
+            set
+            {
+                this.shippers = value;
             }
         }
 

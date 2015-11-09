@@ -1,72 +1,79 @@
-﻿using RadGridViewEFCodeFirst.Data;
-using RadGridViewEFCodeFirst.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Data.Entity.Infrastructure;
-using System.Drawing;
+﻿using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Data.Entity;
+
 using Telerik.WinControls.UI;
+
+using RadGridViewEFCodeFirst.Data;
+using RadGridViewEFCodeFirst.Models;
+using RadGridViewEFCodeFirst.Data.Contracts;
+using RadGridViewEFCodeFirst.Data.Common;
+using System.ComponentModel;
+using System.Collections.Generic;
 
 namespace RadGridViewEFCodeFirst.WinFormsClient
 {
     public partial class Form1 : Form
     {
-        private RadGridViewEFCodeFirstData data;
+        private IRadGridViewEFCodeFirstData data;
 
         public Form1()
         {
             InitializeComponent();
 
             this.data = new RadGridViewEFCodeFirstData();
-            //Uncomment to load data
-            //this.PopulateData();
+            if (!data.OrderTypes.All().Any() || !data.Orders.All().Any() || !data.Shippers.All().Any())
+            {
+                DataGenerator.PopulateData(this.data);
+            }
+
             this.SetUpGrid();
+            this.FormClosing += Form1_FormClosing;
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            this.data.SaveChanges();
         }
 
         private void SetUpGrid()
         {
-            GridViewComboBoxColumn orderTypeColumn = new GridViewComboBoxColumn();
-            orderTypeColumn.Name = "OrderTypeColumn";
-            orderTypeColumn.HeaderText = "OrderType";
-            orderTypeColumn.DataSource = this.data.OrderTypes.All().ToList();
-            orderTypeColumn.ValueMember = "Description";
-            orderTypeColumn.DisplayMember = "Description";
-            orderTypeColumn.FieldName = "Orders";
-            orderTypeColumn.Width = 200;
-            this.radGridView1.Columns.Add(orderTypeColumn);
-        }
+            ((IDbSet<OrderType>)this.data.OrderTypes.All()).Load();
+            this.radGridView1.DataSource = ((IDbSet<OrderType>)this.data.OrderTypes.All()).Local.ToBindingList();
+            this.radGridView1.Columns["Orders"].IsVisible = false;
+            this.radGridView1.Columns["Shippers"].IsVisible = false;
+            this.radGridView1.AutoSizeColumnsMode = GridViewAutoSizeColumnsMode.Fill;
 
-        private void PopulateData()
-        {
-            for (int i = 1; i <= 100; i++)
-            {
-                OrderType orderType = new OrderType()
-                    {
-                        OrderTypeId = i,
-                        Description = "Test" + i
-                    };
+            GridViewTemplate ordersTemplate = new GridViewTemplate();
+            ordersTemplate.Caption = "Orders";
+            radGridView1.MasterTemplate.Templates.Add(ordersTemplate);
+            ((IDbSet<Order>)this.data.Orders.All()).Load();
+            ordersTemplate.DataSource = ((IDbSet<Order>)this.data.Orders.All()).Local.ToBindingList();
+            ordersTemplate.Columns["OrderType"].IsVisible = false;
+            ordersTemplate.AutoSizeColumnsMode = GridViewAutoSizeColumnsMode.Fill;
 
-                this.data.OrderTypes.Add(orderType);
+            GridViewRelation relation = new GridViewRelation(radGridView1.MasterTemplate);
+            relation.ChildTemplate = ordersTemplate;
+            relation.RelationName = "OrderTypesOrders";
+            relation.ParentColumnNames.Add("OrderTypeId");
+            relation.ChildColumnNames.Add("OrderTypeId");
+            radGridView1.Relations.Add(relation);
 
-                Order order = new Order()
-                    {
-                        OrderId = i,
-                        Description = "Description" + i,
-                        OrderTypeId = orderType.OrderTypeId
-                    };
+            GridViewTemplate shippersTemplate = new GridViewTemplate();
+            shippersTemplate.Caption = "Shippers";
+            radGridView1.MasterTemplate.Templates.Add(shippersTemplate);
+            ((IDbSet<Shipper>)this.data.Shippers.All()).Load();
+            shippersTemplate.DataSource = ((IDbSet<Shipper>)this.data.Shippers.All()).Local.ToBindingList();
+            shippersTemplate.Columns["OrderType"].IsVisible = false;
+            shippersTemplate.AutoSizeColumnsMode = GridViewAutoSizeColumnsMode.Fill;
 
-                this.data.Orders.Add(order);
-
-                if (i % 10 == 0)
-                {
-                    this.data.SaveChanges();
-                }
-            }
+            GridViewRelation relation2 = new GridViewRelation(radGridView1.MasterTemplate);
+            relation2.ChildTemplate = shippersTemplate;
+            relation2.RelationName = "OrderTypesShippers";
+            relation2.ParentColumnNames.Add("OrderTypeId");
+            relation2.ChildColumnNames.Add("OrderTypeId");
+            radGridView1.Relations.Add(relation2);
         }
     }
 }

@@ -1,7 +1,6 @@
 namespace RadGridViewEFCodeFirst.Data.Migrations
 {
     using System;
-    using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
 
@@ -9,7 +8,6 @@ namespace RadGridViewEFCodeFirst.Data.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
             this.AutomaticMigrationsEnabled = true;
             this.AutomaticMigrationDataLossAllowed = true;
             this.ContextKey = "RadGridViewEFCodeFirst.Data.RadGridViewEFCodeFirstContext";

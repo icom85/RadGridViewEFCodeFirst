@@ -1,11 +1,9 @@
-﻿using RadGridViewEFCodeFirst.Data.Contracts;
-using RadGridViewEFCodeFirst.Data.Repositories;
-using RadGridViewEFCodeFirst.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using RadGridViewEFCodeFirst.Data.Contracts;
+using RadGridViewEFCodeFirst.Models;
 
 namespace RadGridViewEFCodeFirst.Data
 {
@@ -41,6 +39,14 @@ namespace RadGridViewEFCodeFirst.Data
             }
         }
 
+        public IGenericRepository<Shipper> Shippers
+        {
+            get
+            {
+                return this.GetRepository<Shipper>();
+            }
+        }
+
         public void SaveChanges()
         {
             this.context.SaveChanges();
@@ -51,8 +57,7 @@ namespace RadGridViewEFCodeFirst.Data
             var typeOfModel = typeof(T);
             if (!this.repositories.ContainsKey(typeOfModel))
             {
-                var type = typeof(GenericRepository<T>);
-
+                Type type = typeof(RadGridViewEFCodeFirstRepository<T>);
                 this.repositories.Add(typeOfModel, Activator.CreateInstance(type, this.context));
             }
 

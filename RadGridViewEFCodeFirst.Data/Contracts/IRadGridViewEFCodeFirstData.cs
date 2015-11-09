@@ -1,9 +1,7 @@
-﻿using RadGridViewEFCodeFirst.Models;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using RadGridViewEFCodeFirst.Models;
 
 namespace RadGridViewEFCodeFirst.Data.Contracts
 {
@@ -12,5 +10,9 @@ namespace RadGridViewEFCodeFirst.Data.Contracts
         IGenericRepository<Order> Orders { get; }
 
         IGenericRepository<OrderType> OrderTypes { get; }
+
+        IGenericRepository<Shipper> Shippers { get; }
+
+        void SaveChanges();
     }
 }
